@@ -85,13 +85,30 @@ public class PublisherTrafficInformationSW implements Callable {
             for (Integer countryId : publisherTraffic.getCountryIdChanelStatusMap().keySet()) {
                 int isoCountryId  = TrafficInfoService.domainCountriesMap.get(countryId);
                 if(isoCountryId==0){
-                    int parent = TrafficInfoService.domainParentMap.get(countryId);
-                    logger.debug("Iso country code undefined. .... Take by parent id " +parent);
-                    isoCountryId = TrafficInfoService.domainCountriesMap.get(parent);
+                    if( !TrafficInfoService.domainParentMap.containsKey(countryId)){
+                        logger.error("Iso country code undefined for " + countryId);
+                    }
+                    else {
+                        int parent = TrafficInfoService.domainParentMap.get(countryId);
+                        if (TrafficInfoService.domainCountriesMap.containsKey(parent)){
+                            logger.debug("Iso country code undefined. .... Take by parent id " + parent);
+                            isoCountryId = TrafficInfoService.domainCountriesMap.get(parent);
+                        }
+                        else{
+                            logger.error("Iso country code undefined for " +countryId);
+                        }
+                    }
                 }
 
                 logger.debug("Get sw data for iso country " + isoCountryId + " " +publisherTraffic.getDomain());
-                generateEcTrafficInfo(swTrafficByCountryMap.get(isoCountryId), publisherTraffic, countryId);
+                if(isoCountryId !=0){
+                    logger.debug("Get sw data for iso country " + isoCountryId + " " +publisherTraffic.getDomain());
+                    generateEcTrafficInfo(swTrafficByCountryMap.get(isoCountryId), publisherTraffic, countryId);
+
+                }
+                else{
+                    logger.error("No sw data for iso country " + isoCountryId + " " +publisherTraffic.getDomain());
+                }
 
             }
         }
