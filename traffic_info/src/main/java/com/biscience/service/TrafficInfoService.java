@@ -26,6 +26,7 @@ public class TrafficInfoService {
 
 	//country ->iso country
 	public static Map<Integer,Integer> domainCountriesMap;
+	public static Map<Integer,Integer> domainParentMap;
 	public static Map<String,PublisherTraffic>  domainTrafficMap;
 
 
@@ -36,6 +37,7 @@ public class TrafficInfoService {
 
 		domainCountriesMap = Maps.newHashMap();
 		domainTrafficMap = Maps.newConcurrentMap();
+		domainParentMap = Maps.newHashMap();
 		EntitiesDao.getRelevantPublishersForSW();
 		EntitiesDao.getCountries();
 

@@ -25,8 +25,7 @@ public class PublisherTrafficInformationThread implements Callable {
     private static Logger logger = Logger.getLogger(PublisherTrafficInformationThread.class);
     private static Logger swRawDataLogger = Logger.getLogger("swDataCsv");
     private static Logger entityCountryLogger = Logger.getLogger("ecDataCsv");
-    private final Integer NON_DMA = 255;
-    private final Integer US_CODE = 1;
+
 
 
     public PublisherTrafficInformationThread(PublisherTraffic publisherTraffic, String infoDate) {
@@ -43,12 +42,11 @@ public class PublisherTrafficInformationThread implements Callable {
             Map<Integer, SwTrafficByCountry> swTrafficByCountryMap = getSwTrafficData(publisherTraffic, infoDate);
             if (!swTrafficByCountryMap.isEmpty()) {
                 for (Integer countryId : publisherTraffic.getCountryIdChanelStatusMap().keySet()) {
-                    int isoCountryId = 0;
-                    if(countryId>NON_DMA){
-                        isoCountryId = TrafficInfoService.domainCountriesMap.get(US_CODE);
-                    }
-                    else{
-                        isoCountryId = TrafficInfoService.domainCountriesMap.get(countryId);
+                    int isoCountryId  = TrafficInfoService.domainCountriesMap.get(countryId);
+                    if(isoCountryId==0){
+                        int parent = TrafficInfoService.domainParentMap.get(countryId);
+                        logger.debug("Iso country code undefined. .... Take by parent id " +parent);
+                        isoCountryId = TrafficInfoService.domainCountriesMap.get(parent);
                     }
 
                     logger.debug("Get sw data for iso country " + isoCountryId + " " +publisherTraffic.getDomain());

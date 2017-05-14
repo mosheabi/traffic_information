@@ -13,7 +13,7 @@ import java.sql.*;
 
 public class EntitiesDao {
 
-	private static final String SELECT_COUNTRY_ISO = "SELECT ID,ISO_NUMERIC_CODE FROM DEV_ADC2_OPS.COUNTRIES;";
+	private static final String SELECT_COUNTRY_ISO = "SELECT ID,ISO_NUMERIC_CODE,PARENT_ID FROM DEV_ADC2_OPS.COUNTRIES;";
 
 	// logger
 	private static Logger log = Logger.getLogger(EntitiesDao.class);
@@ -99,7 +99,11 @@ public class EntitiesDao {
 			while (rs.next()) {
 				int countryId = rs.getInt("id");
 				int isoCountryId = rs.getInt("ISO_NUMERIC_CODE");
+				int parentId = rs.getInt("parent_id");
 				TrafficInfoService.domainCountriesMap.put(countryId,isoCountryId);
+				if(isoCountryId==0) {
+					TrafficInfoService.domainParentMap.put(countryId, parentId);
+				}
 			}
 		} catch (Exception e) {
 			log.error("SQLException, ", e);
