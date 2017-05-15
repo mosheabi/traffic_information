@@ -4,6 +4,7 @@ import com.biscience.EntitiesDao;
 import com.biscience.TrafficInfoProperties;
 import com.biscience.model.PublisherTraffic;
 import com.google.common.collect.Maps;
+import constants.TrafficInfoCmdParams;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,8 @@ public class TrafficInfoService {
 			for (String domain : domainTrafficMap.keySet()){
 
 				logger.info("RUN :"+domain);
-				PublisherTrafficInformationThread publisherTrafficInformationThread = new PublisherTrafficInformationThread(domainTrafficMap.get(domain), infoDate);
+				String period = infoDate.replace(TrafficInfoCmdParams.SW_DATE_DELIMITER,"");
+				PublisherTrafficInformationThread publisherTrafficInformationThread = new PublisherTrafficInformationThread(domainTrafficMap.get(domain), infoDate,period);
 
 				Future<Boolean> future = executor.submit(publisherTrafficInformationThread);
 				futureSet.add(future);
@@ -147,7 +149,9 @@ public class TrafficInfoService {
 				year--;
 				month = Calendar.DECEMBER + 1;
 			}
-			infoDate = year + "-" + month;
+			String monthStr = String.valueOf(month);
+			monthStr = (month<10 && monthStr.length() == 1 ) ? "0"+monthStr : monthStr;
+			infoDate = year + TrafficInfoCmdParams.SW_DATE_DELIMITER + monthStr;
 		}catch (Exception e)
 		{
 			logger.error("Failed compute info date "+e);

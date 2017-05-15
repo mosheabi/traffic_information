@@ -2,6 +2,7 @@ package com.biscience.model;
 
 import com.biscience.TrafficInfoProperties;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -47,18 +48,26 @@ public class PublisherTraffic {
         this.countryIdChanelStatusMap = countryIdChanelStatusMap;
     }
 
-    public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews){
+    public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews,double share,String period,String trafficSrc){
         StringBuilder sb = new StringBuilder();
-        sb.append(entityId).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(domain).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(countryId).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(channelId).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(estimatedPageViews).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(monthlyVisitors).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(bounceRate).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(averagePageViews).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(averageTimeViews).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(new Timestamp(new Date().getTime()));
+        String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
+        if(StringUtils.isEmpty(separator))
+        {
+            separator = "\t";
+        }
+        sb.append(entityId).append(separator);
+        sb.append(domain).append(separator);
+        sb.append(countryId).append(separator);
+        sb.append(channelId).append(separator);
+        sb.append(estimatedPageViews).append(separator);
+        sb.append(monthlyVisitors).append(separator);
+        sb.append(bounceRate).append(separator);
+        sb.append(averagePageViews).append(separator);
+        sb.append(averageTimeViews).append(separator);
+        sb.append(share).append(separator);
+        sb.append(new Timestamp(new Date().getTime())).append(separator);
+        sb.append(period).append(separator);
+        sb.append(trafficSrc);
         return  sb.toString();
 
 

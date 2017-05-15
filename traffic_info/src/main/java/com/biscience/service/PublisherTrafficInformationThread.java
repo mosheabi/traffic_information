@@ -5,6 +5,7 @@ import com.biscience.model.PublisherTraffic;
 import com.biscience.model.SwTrafficByCountry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
+import constants.TrafficSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import utils.HttpUtil;
@@ -25,13 +26,15 @@ public class PublisherTrafficInformationThread implements Callable {
     private static Logger logger = Logger.getLogger(PublisherTrafficInformationThread.class);
     private static Logger swRawDataLogger = Logger.getLogger("swDataCsv");
     private static Logger entityCountryLogger = Logger.getLogger("ecDataCsv");
+    private String period;
 
 
 
-    public PublisherTrafficInformationThread(PublisherTraffic publisherTraffic, String infoDate) {
+    public PublisherTrafficInformationThread(PublisherTraffic publisherTraffic, String infoDate,String period) {
         logger.debug("Create thread for " + publisherTraffic.getDomain());
         this.publisherTraffic = publisherTraffic;
         this.infoDate = infoDate;
+        this.period = period;
     }
 
     @Override
@@ -73,7 +76,7 @@ public class PublisherTrafficInformationThread implements Callable {
                 Map<Integer, Boolean> channelMap = publisherTraffic.getCountryIdChanelStatusMap().get(countryId);
 
                 channelMap.keySet().forEach((Integer channel) -> {
-                    String eclog = publisherTraffic.toCsvLine(countryId, channel, estimatedPageView, monthlyVisitors, swTrafficByCountry.getBounceRate(), swTrafficByCountry.getPagesPerVisits(), swTrafficByCountry.getAverageTime());
+                    String eclog = publisherTraffic.toCsvLine(countryId, channel, estimatedPageView, monthlyVisitors, swTrafficByCountry.getBounceRate(), swTrafficByCountry.getPagesPerVisits(), swTrafficByCountry.getAverageTime(),swTrafficByCountry.getShare(),period, TrafficSource.SW.name());
                     entityCountryLogger.info(eclog);
                     channelMap.put(channel, true);
                     publisherTraffic.setDone(true);

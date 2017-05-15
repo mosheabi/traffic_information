@@ -3,6 +3,7 @@ package com.biscience.model;
 
 import com.biscience.TrafficInfoProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -141,14 +142,20 @@ public class SwTrafficByCountry {
 
     public String toCsvLine(){
         StringBuilder sb = new StringBuilder();
-        sb.append(entityId).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(domain).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(country).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(share).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(visits).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(pagesPerVisits).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(averageTime).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
-        sb.append(bounceRate).append(TrafficInfoProperties.CSV_SEPARATOR.getValue());
+
+        String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
+        if(StringUtils.isEmpty(separator))
+        {
+            separator = "\t";
+        }
+        sb.append(entityId).append(separator);
+        sb.append(domain).append(separator);
+        sb.append(country).append(separator);
+        sb.append(share).append(separator);
+        sb.append(visits).append(separator);
+        sb.append(pagesPerVisits).append(separator);
+        sb.append(averageTime).append(separator);
+        sb.append(bounceRate).append(separator);
         sb.append(rank);
 
 

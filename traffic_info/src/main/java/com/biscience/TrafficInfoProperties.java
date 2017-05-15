@@ -14,7 +14,7 @@ public class TrafficInfoProperties implements PropertyDefinitions {
     public static final Property SW_TOKEN = new Property("explorer.similarweb.token", "083d69224dcb8303f0b2638e272356af","similarweb token");
 
     public static final Property SOCKET_TIMEOUT = new Property("socket.timeout","30","socket timeout for http connection.Prevent freeze of site");
-    public static final Property CSV_SEPARATOR = new Property("csv.separator",",","csv separator");
+    public static final Property CSV_SEPARATOR = new Property("csv.separator","\t","csv separator");
     public static final Property NUM_PROCESSES = new Property("num.publishers","4","number of publishers run  ");
 
 
