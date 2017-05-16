@@ -103,17 +103,7 @@ public class TrafficInfoService {
 
 		}
 
-//		while( publishersNumberNotRunned > 0 || !isComplete(futureSet)){
-//
-//			///wait
-//			try {
-//				logger.debug( "Still running with publishers... ");
-//				Thread.sleep(3000);
-//			} catch (InterruptedException e) {
-//				logger.debug("was some interrupt "+e);
-//			}
-//
-//		}
+
 
 
 		logger.info("----- Run Summery ----");
@@ -143,8 +133,9 @@ public class TrafficInfoService {
 
 		});
 		logger.info("Received publishers " +domainTrafficMap.keySet().size());
-		logger.info("Succeded updates "+ doneCounts[0]);
-		logger.info("Failed updates "+ doneCounts[1]);
+		logger.info("Found for updates "+ doneCounts[0]);
+		logger.info("Succeded updates "+ doneCounts[1]);
+		logger.info("Failed updates "+ doneCounts[2]);
 
 	}
 
