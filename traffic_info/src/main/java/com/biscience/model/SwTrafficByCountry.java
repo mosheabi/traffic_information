@@ -16,15 +16,15 @@ import java.util.Map;
 public class SwTrafficByCountry {
     private String startDate;
     private String endDate;
-    private int country;
-    private double share;
-    private double visits;
-    private double pagesPerVisits;
-    private double averageTime;
-    private double bounceRate;
-    private int rank;
+    private Integer country;
+    private Double share;
+    private Double visits;
+    private Double pagesPerVisits;
+    private Double averageTime;
+    private Double bounceRate;
+    private Integer rank;
     private String domain;
-    private int entityId;
+    private Integer entityId;
 
     public SwTrafficByCountry(Map<String,Object> swInfo,String infoDate,String domain,int entityId) {
         startDate = infoDate;
@@ -142,6 +142,7 @@ public class SwTrafficByCountry {
 
     public String toCsvLine(){
         StringBuilder sb = new StringBuilder();
+        //Publisher id, Domain, start date, end date ,country id, share, visits, average_time, bounce_rate,rank
 
         String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
         if(StringUtils.isEmpty(separator))
@@ -150,6 +151,8 @@ public class SwTrafficByCountry {
         }
         sb.append(entityId).append(separator);
         sb.append(domain).append(separator);
+        sb.append(startDate).append(separator);
+        sb.append(endDate).append(separator);
         sb.append(country).append(separator);
         sb.append(share).append(separator);
         sb.append(visits).append(separator);

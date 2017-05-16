@@ -2,11 +2,14 @@ package com.biscience.service;
 
 import com.biscience.TrafficInfoProperties;
 import com.biscience.model.PublisherTraffic;
+import com.biscience.model.SwCalls;
 import com.biscience.model.SwTrafficByCountry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import constants.TrafficSource;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import utils.HttpUtil;
 
@@ -17,24 +20,28 @@ import java.util.concurrent.Callable;
 /**
  * Created by Anna Kuranda on 5/8/2017.
  */
-public class PublisherTrafficInformationThread implements Callable {
+public class PublisherTrafficInformationSW implements Callable {
     private PublisherTraffic publisherTraffic;
     private String infoDate;
     private String trafficUrlTemplate = "https://api.similarweb.com/v1/website/%p/Geo/traffic-by-country?api_key=%k&start_date=%d&end_date=%d&main_domain_only=false&format=json";
     private  final String SW_RECORDS = "records";
     // logger
-    private static Logger logger = Logger.getLogger(PublisherTrafficInformationThread.class);
+    private static Logger logger = Logger.getLogger(PublisherTrafficInformationSW.class);
     private static Logger swRawDataLogger = Logger.getLogger("swDataCsv");
     private static Logger entityCountryLogger = Logger.getLogger("ecDataCsv");
-    private String period;
+    private static Logger swCallsLogger= Logger.getLogger("swCallsCsv");
+
+    private String monthId;
+    private HttpUtil httpUtil;
 
 
 
-    public PublisherTrafficInformationThread(PublisherTraffic publisherTraffic, String infoDate,String period) {
+    public PublisherTrafficInformationSW(PublisherTraffic publisherTraffic, String infoDate, String monthId) {
         logger.debug("Create thread for " + publisherTraffic.getDomain());
         this.publisherTraffic = publisherTraffic;
         this.infoDate = infoDate;
-        this.period = period;
+        this.monthId = monthId;
+        httpUtil = new HttpUtil();
     }
 
     @Override
@@ -76,7 +83,7 @@ public class PublisherTrafficInformationThread implements Callable {
                 Map<Integer, Boolean> channelMap = publisherTraffic.getCountryIdChanelStatusMap().get(countryId);
 
                 channelMap.keySet().forEach((Integer channel) -> {
-                    String eclog = publisherTraffic.toCsvLine(countryId, channel, estimatedPageView, monthlyVisitors, swTrafficByCountry.getBounceRate(), swTrafficByCountry.getPagesPerVisits(), swTrafficByCountry.getAverageTime(),swTrafficByCountry.getShare(),period, TrafficSource.SW.name());
+                    String eclog = publisherTraffic.toCsvLine(countryId, channel, estimatedPageView, monthlyVisitors, swTrafficByCountry.getBounceRate(), swTrafficByCountry.getPagesPerVisits(), swTrafficByCountry.getAverageTime(),swTrafficByCountry.getShare(), monthId, TrafficSource.SW.name());
                     entityCountryLogger.info(eclog);
                     channelMap.put(channel, true);
                     publisherTraffic.setDone(true);
@@ -99,15 +106,17 @@ public class PublisherTrafficInformationThread implements Callable {
         Map<Integer,SwTrafficByCountry> swData = Maps.newHashMap();
         try {
 
-            trafficUrlTemplate = trafficUrlTemplate.replace("%d", infoDate).replace("%p", publisherTraffic.getDomain()).replace("%k", TrafficInfoProperties.SW_TOKEN.getValue().trim());
+            trafficUrlTemplate = trafficUrlTemplate.replace("%d", infoDate).replace("%p", httpUtil.getUrlWithProtocol(publisherTraffic.getDomain())).replace("%k", TrafficInfoProperties.SW_TOKEN.getValue().trim());
             logger.debug("Send request to "+trafficUrlTemplate);
-            String swResponse = HttpUtil.getHttp(trafficUrlTemplate,TrafficInfoProperties.SOCKET_TIMEOUT.getIntValue());
-            if(StringUtils.isEmpty(swResponse)){
+            Pair<Integer, String> swResponse = httpUtil.getHttp(trafficUrlTemplate,TrafficInfoProperties.SOCKET_TIMEOUT.getIntValue());
+            SwCalls swCalls = new SwCalls(trafficUrlTemplate,swResponse.getRight(),publisherTraffic.getDomain(),SwCalls.TRAFFIC_CALL );
+            swCallsLogger.info(swCalls.toCsv());
+            if(swResponse.getLeft()!= HttpStatus.SC_OK || StringUtils.isEmpty(swResponse.getRight())){
                 logger.error("Failed get response " + trafficUrlTemplate);
                 logger.debug("Publisher should be not updated with SW info "+ publisherTraffic.getDomain());
             }
             else{
-                swData = parseSwData(swResponse,publisherTraffic.getEntityId(),publisherTraffic.getDomain(),infoDate);
+                swData = parseSwData(swResponse.getRight(),publisherTraffic.getEntityId(),httpUtil.getUrlWithProtocol(publisherTraffic.getDomain()),infoDate);
             }
         }catch(Exception e){
             logger.error("Failed get SW data " +e);
@@ -129,6 +138,7 @@ public class PublisherTrafficInformationThread implements Callable {
 
 
 
+
                 });
             }
         }catch(Exception e){
@@ -144,4 +154,6 @@ public class PublisherTrafficInformationThread implements Callable {
     public void setPublisherTraffic(PublisherTraffic publisherTraffic) {
         this.publisherTraffic = publisherTraffic;
     }
+
+
 }

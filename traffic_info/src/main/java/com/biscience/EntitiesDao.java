@@ -7,7 +7,6 @@ import db.DbProperties;
 import db.SqlUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import utils.HttpUtil;
 
 import java.sql.*;
 
@@ -42,7 +41,7 @@ public class EntitiesDao {
 			while (rs.next()) {
 				int countryId = rs.getInt("country_id");
 				int entityId = rs.getInt("entity_id");
-				String domain = HttpUtil.getUrlWithProtocol(rs.getString("domain"));
+				String domain = rs.getString("domain");
 				int channel =  rs.getInt("channel");
 				if(isValidData(countryId,entityId,domain.toLowerCase().trim()))
 				{

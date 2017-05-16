@@ -67,9 +67,9 @@ public class TrafficInfoService {
 
 				logger.info("RUN :"+domain);
 				String period = infoDate.replace(TrafficInfoCmdParams.SW_DATE_DELIMITER,"");
-				PublisherTrafficInformationThread publisherTrafficInformationThread = new PublisherTrafficInformationThread(domainTrafficMap.get(domain), infoDate,period);
+				PublisherTrafficInformationSW publisherTrafficInformationSW = new PublisherTrafficInformationSW(domainTrafficMap.get(domain), infoDate,period);
 
-				Future<Boolean> future = executor.submit(publisherTrafficInformationThread);
+				Future<Boolean> future = executor.submit(publisherTrafficInformationSW);
 				futureSet.add(future);
 				publishersNumberNotRunned--;
 
@@ -118,15 +118,29 @@ public class TrafficInfoService {
 
 		logger.info("----- Run Summery ----");
 		logger.info("Time : " +new Date());
-		final int[] doneCounts =new int[2];
+		//in first index should sum all records to update
+		//in second all updated records
+		//in third all not updated records
+		final int[] doneCounts = new int[3];
 
 		domainTrafficMap.keySet().forEach((String domain) ->{
-			if(domainTrafficMap.get(domain).getDone()){
-				doneCounts[0]++;
-			}
-			else{
-				doneCounts[1]++;
-			}
+			Map<Integer, Map<Integer, Boolean>> countryIdChanelStatusMap = domainTrafficMap.get(domain).getCountryIdChanelStatusMap();
+
+			countryIdChanelStatusMap.keySet().forEach(countryIdChanelStatus->{
+				Map<Integer,Boolean> countriesChannel = countryIdChanelStatusMap.get(countryIdChanelStatus);
+				countriesChannel.keySet().forEach(chanelStatus->{
+					doneCounts[0]++;
+					if(countriesChannel.get(chanelStatus)) {
+						doneCounts[1]++;
+					}
+
+					else{
+						doneCounts[2]++;
+					}
+
+				});
+			});
+
 		});
 		logger.info("Received publishers " +domainTrafficMap.keySet().size());
 		logger.info("Succeded updates "+ doneCounts[0]);

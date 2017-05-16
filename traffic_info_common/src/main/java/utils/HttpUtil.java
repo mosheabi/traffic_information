@@ -1,5 +1,7 @@
 package utils;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -24,10 +26,11 @@ public class HttpUtil {
     private static Logger logger = Logger.getLogger(HttpUtil.class);
 
 
-    public static  String getHttp(String url, int socketTimeOut){
+    public Pair<Integer,String> getHttp(String url, int socketTimeOut){
         logger.debug("Got request for http "+url);
         HttpResponse response = null;
         String result = null;
+       MutablePair<Integer,String> httpResult = new MutablePair<Integer,String>();
         try {
 
 
@@ -52,8 +55,9 @@ public class HttpUtil {
             };
             new Timer(true).schedule(task, socketTimeOut * 2000);
             response =  httpClient.execute(httpGet);
-            if (response!=null && response.getStatusLine().getStatusCode() == 200) {
-                logger.debug("Got response 200 from " + url);
+
+            if (response!=null ) {
+
 
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
@@ -64,6 +68,8 @@ public class HttpUtil {
                     // now you have the string representation of the HTML request
 
                     instream.close();
+                    httpResult.setLeft(response.getStatusLine().getStatusCode());
+                    httpResult.setRight(result);
 
 
                 }
@@ -82,9 +88,9 @@ public class HttpUtil {
             logger.error("Failed get responce for url  " + url + "\n" + e);
 
         }
-        return result;
+        return httpResult;
     }
-    public static String getUrlWithProtocol(String url){
+    public  String getUrlWithProtocol(String url){
         url = url.replace("http://","");
         url = url.replace("https://","");
         return url;

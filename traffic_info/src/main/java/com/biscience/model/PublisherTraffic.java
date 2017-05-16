@@ -48,7 +48,7 @@ public class PublisherTraffic {
         this.countryIdChanelStatusMap = countryIdChanelStatusMap;
     }
 
-    public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews,double share,String period,String trafficSrc){
+    public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews,double share,String monthId,String trafficSrc){
         StringBuilder sb = new StringBuilder();
         String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
         if(StringUtils.isEmpty(separator))
@@ -66,7 +66,7 @@ public class PublisherTraffic {
         sb.append(averageTimeViews).append(separator);
         sb.append(share).append(separator);
         sb.append(new Timestamp(new Date().getTime())).append(separator);
-        sb.append(period).append(separator);
+        sb.append(monthId).append(separator);
         sb.append(trafficSrc);
         return  sb.toString();
 
