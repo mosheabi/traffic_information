@@ -132,7 +132,6 @@ public class TrafficInfoService {
 			});
 
 		});
-		logger.info("Received publishers " +domainTrafficMap.keySet().size());
 		logger.info("Found for updates "+ doneCounts[0]);
 		logger.info("Succeded updates "+ doneCounts[1]);
 		logger.info("Failed updates "+ doneCounts[2]);
@@ -164,17 +163,7 @@ public class TrafficInfoService {
 		return infoDate;
 	}
 
-	public boolean isComplete( Set<Future<Boolean>> futures){
 
-		for (Future<?> future : futures) {
-			if (!future.isDone()) {
-				logger.debug("Not all proccess completed...");
-				return false;
-			}
-		}
-		logger.debug("All proccess completed...");
-		return true;
-	}
 
 
 
