@@ -149,7 +149,7 @@
                         <excludes>
                             <exclude>**/controllers/**</exclude>
                             <!--<exclude>**/config/**</exclude>-->
-                            <exclude>com/bis/**/*Test.class</exclude>
+                            <exclude>com/biscience/**/*Test.class</exclude>
                         </excludes>
                     </instrumentation>
                     <formats>
