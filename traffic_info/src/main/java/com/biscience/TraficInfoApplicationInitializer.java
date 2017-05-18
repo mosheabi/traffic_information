@@ -4,7 +4,6 @@ import com.biscience.service.TrafficInfoService;
 import config.ConfigurationManager;
 import constants.TrafficInfoCmdParams;
 import db.DbProperties;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +65,6 @@ public class TraficInfoApplicationInitializer implements CommandLineRunner,Runna
     public void run() {
         trafficInfoService.init();
         trafficInfoService.execute();
+        System.exit(0);
     }
 }
