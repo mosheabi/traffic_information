@@ -303,6 +303,24 @@
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>default</id>
 
+            <repositories>
+                <repository>
+                    <id>biscience</id>
+                    <url>http://apprank.dev.adclarity.com:8080/nexus-2.8.1-01/content/repositories/biscience/</url>
+                    <releases>
+                        <updatePolicy>always</updatePolicy>
+                    </releases>
+                </repository>
+            </repositories>
+            <modules>
+                <module>traffic_info_common</module>
+                <module>traffic_info</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
