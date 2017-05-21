@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * Created by Anna Kuranda on 5/16/2017.
  */
 public class SwCalls {
+    public static final String SOURCE_DATA_CALL = "sourceTrafficData";
     private String request;
     private String response;
     private String url;
