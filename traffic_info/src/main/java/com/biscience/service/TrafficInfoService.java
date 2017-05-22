@@ -5,7 +5,6 @@ import com.biscience.TrafficInfoProperties;
 import com.biscience.model.PublisherTraffic;
 import com.google.common.collect.Maps;
 import constants.TrafficInfoCmdParams;
-import monitoring.counters.dynamic.CounterManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class TrafficInfoService {
 
 	private static Logger logger = Logger.getLogger(TrafficInfoService.class);
 	// counters
-	private CounterManager counterManager;
+	//private CounterManager counterManager;
 
 
 
@@ -44,7 +43,7 @@ public class TrafficInfoService {
 		domainParentMap = Maps.newHashMap();
 		EntitiesDao.getRelevantPublishersForSW();
 		EntitiesDao.getCountries();
-		counterManager = new CounterManager();
+		//counterManager = new CounterManager();
 
 
 	}

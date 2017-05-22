@@ -3,6 +3,9 @@ package com.biscience.model;
 import com.biscience.TrafficInfoProperties;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Created by Anna Kuranda on 5/21/2017.
  */
@@ -70,7 +73,7 @@ public class PublisherTrafficSource {
         {
             separator = "\t";
         }
-
+        sb.append(new Timestamp(new Date().getTime())).append(separator);
         sb.append(entityId).append(separator);
         sb.append(eType).append(separator);
         sb.append(srcType).append(separator);

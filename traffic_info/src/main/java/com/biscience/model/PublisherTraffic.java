@@ -47,8 +47,21 @@ public class PublisherTraffic {
     public void setCountryIdChanelStatusMap(Map<Integer, Map<Integer, Boolean>> countryIdChanelStatusMap) {
         this.countryIdChanelStatusMap = countryIdChanelStatusMap;
     }
-
-    public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews,double share,String monthId,String trafficSrc){
+/*
+entity_id DECIMAL(18,0),
+PUB_NAME VARCHAR(1024),
+COUNTRY_ID DECIMAL(18,0),
+CHANNEL DECIMAL(2,0),
+estimated_page_views  DECIMAL(18,5),
+monthly_visitors  DECIMAL(18,5),
+Bounce_rate  DECIMAL(18,5),
+average_page_views DECIMAL(18,5),
+average_time_spent DECIMAL(18,5),
+Info_date TIMESTAMP,
+Month_id DECIMAL(6,0),
+estimated_Visitors DECIMAL(18,5)
+ */
+    public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews,String monthId,Double estimatedVisitors){
         StringBuilder sb = new StringBuilder();
         String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
         if(StringUtils.isEmpty(separator))
@@ -64,10 +77,10 @@ public class PublisherTraffic {
         sb.append(bounceRate).append(separator);
         sb.append(averagePageViews).append(separator);
         sb.append(averageTimeViews).append(separator);
-        sb.append(share).append(separator);
         sb.append(new Timestamp(new Date().getTime())).append(separator);
         sb.append(monthId).append(separator);
-        sb.append(trafficSrc);
+        sb.append(estimatedVisitors);
+
         return  sb.toString();
 
 

@@ -4,7 +4,6 @@ import com.biscience.SwApiParser;
 import com.biscience.TrafficInfoProperties;
 import com.biscience.model.*;
 import com.google.common.collect.Maps;
-import constants.TrafficSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
@@ -110,9 +109,9 @@ public class PublisherTrafficInformationSW implements Callable {
                 float estimatedPageView = Math.round(swTrafficByCountry.getVisits() * swTrafficByCountry.getPagesPerVisits());
                 float monthlyVisitors = Math.round(swTrafficByCountry.getVisits());
                 Map<Integer, Boolean> channelMap = publisherTraffic.getCountryIdChanelStatusMap().get(countryId);
-
+                double estimatedVisitors = swTrafficByCountry.getVisits()/swTrafficByCountry.getShare();
                 channelMap.keySet().forEach((Integer channel) -> {
-                    String eclog = publisherTraffic.toCsvLine(countryId, channel, estimatedPageView, monthlyVisitors, swTrafficByCountry.getBounceRate(), swTrafficByCountry.getPagesPerVisits(), swTrafficByCountry.getAverageTime(),swTrafficByCountry.getShare(), monthId, TrafficSource.SW.name());
+                    String eclog = publisherTraffic.toCsvLine(countryId, channel, estimatedPageView, monthlyVisitors, swTrafficByCountry.getBounceRate(), swTrafficByCountry.getPagesPerVisits(), swTrafficByCountry.getAverageTime(), monthId, estimatedVisitors);
                     entityCountryLogger.info(eclog);
                     channelMap.put(channel, true);
                     publisherTraffic.setDone(true);
