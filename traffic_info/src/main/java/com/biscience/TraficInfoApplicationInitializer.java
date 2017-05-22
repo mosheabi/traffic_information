@@ -57,7 +57,7 @@ public class TraficInfoApplicationInitializer implements CommandLineRunner,Runna
             System.exit(1);
         }
 
-        //log.info("Look in application.yml for the  directory path. Files will be created every 30 seconds.");
+
     }
 
 
