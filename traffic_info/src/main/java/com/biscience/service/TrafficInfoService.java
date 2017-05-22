@@ -47,7 +47,7 @@ public class TrafficInfoService {
 
 
 	}
-	//@Scheduled  // every 30 seconds
+
 	public void execute() {
 		String infoDate = getInfoDate();
 		System.out.println("Start app");
@@ -74,27 +74,16 @@ public class TrafficInfoService {
 				Future<Boolean> future = executor.submit(publisherTrafficInformationSW);
 				futureSet.add(future);
 				publishersNumberNotRunned--;
-
-
-
-
-
-
-
 			}
 
 			futureSet.forEach(f -> {
 				try {
 					//get analised urls(after check domain)
 					Boolean res = f.get();
-
-
-
 				}
 				catch (Exception e1) {
 					logger.error("Interruption issue " + e1);
 				}
-
 			});
 
 		} catch (Exception e) {
