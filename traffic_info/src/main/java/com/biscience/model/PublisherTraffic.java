@@ -2,6 +2,7 @@ package com.biscience.model;
 
 import com.biscience.TrafficInfoProperties;
 import com.google.common.collect.Maps;
+import constants.TrafficInfoCmdParams;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Timestamp;
@@ -63,11 +64,7 @@ estimated_Visitors DECIMAL(18,5)
  */
     public String toCsvLine(Integer countryId,Integer channelId , double estimatedPageViews,double monthlyVisitors,double bounceRate,double averagePageViews,double averageTimeViews,String monthId,Double estimatedVisitors){
         StringBuilder sb = new StringBuilder();
-        String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
-        if(StringUtils.isEmpty(separator))
-        {
-            separator = "\t";
-        }
+        String separator = StringUtils.isEmpty(TrafficInfoProperties.CSV_SEPARATOR.getValue())? TrafficInfoCmdParams.CSV_DEFAULT_DELIMITER : TrafficInfoProperties.CSV_SEPARATOR.getValue();
         sb.append(entityId).append(separator);
         sb.append(domain).append(separator);
         sb.append(countryId).append(separator);

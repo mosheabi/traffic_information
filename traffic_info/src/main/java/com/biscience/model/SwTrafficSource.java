@@ -2,6 +2,7 @@ package com.biscience.model;
 
 import com.biscience.TrafficInfoProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constants.TrafficInfoCmdParams;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -80,11 +81,8 @@ public class SwTrafficSource {
     public String toCsv(){
         StringBuilder sb = new StringBuilder();
 
-        String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
-        if(StringUtils.isEmpty(separator))
-        {
-            separator = "\t";
-        }
+        String separator = StringUtils.isEmpty(TrafficInfoProperties.CSV_SEPARATOR.getValue())? TrafficInfoCmdParams.CSV_DEFAULT_DELIMITER : TrafficInfoProperties.CSV_SEPARATOR.getValue();
+
 
         sb.append(infoDate).append(separator);
         sb.append(domain).append(separator);

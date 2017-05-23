@@ -3,6 +3,7 @@ package com.biscience.model;
 
 import com.biscience.TrafficInfoProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constants.TrafficInfoCmdParams;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -144,11 +145,8 @@ public class SwTrafficByCountry {
         StringBuilder sb = new StringBuilder();
         //Publisher id, Domain, start date, end date ,country id, share, visits, average_time, bounce_rate,rank
 
-        String separator = TrafficInfoProperties.CSV_SEPARATOR.getValue();
-        if(StringUtils.isEmpty(separator))
-        {
-            separator = "\t";
-        }
+        String separator = StringUtils.isEmpty(TrafficInfoProperties.CSV_SEPARATOR.getValue())? TrafficInfoCmdParams.CSV_DEFAULT_DELIMITER : TrafficInfoProperties.CSV_SEPARATOR.getValue();
+
         sb.append(entityId).append(separator);
         sb.append(domain).append(separator);
         sb.append(startDate).append(separator);
