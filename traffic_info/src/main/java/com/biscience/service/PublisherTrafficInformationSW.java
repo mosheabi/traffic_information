@@ -136,7 +136,7 @@ public class PublisherTrafficInformationSW implements Callable {
         try {
 
             sourceDataUrlTemplate = sourceDataUrlTemplate.replace("%d", infoDate).replace("%p", httpUtil.getUrlWithProtocol(publisherTraffic.getDomain())).replace("%k", TrafficInfoProperties.SW_TOKEN.getValue().trim());
-            logger.debug("Send request to "+trafficUrlTemplate);
+            logger.debug("Send request to "+sourceDataUrlTemplate);
             Pair<Integer, String> swResponse = httpUtil.getHttp(sourceDataUrlTemplate,TrafficInfoProperties.SOCKET_TIMEOUT.getIntValue());
             SwCalls swCalls = new SwCalls(sourceDataUrlTemplate,swResponse.getRight(),publisherTraffic.getDomain(),SwCalls.SOURCE_DATA_CALL );
             swCallsLogger.info(swCalls.toCsv());
