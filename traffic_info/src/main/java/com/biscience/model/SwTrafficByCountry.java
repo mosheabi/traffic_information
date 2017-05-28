@@ -36,7 +36,7 @@ public class SwTrafficByCountry {
         pagesPerVisits = Double.parseDouble(swInfo.get("pages_per_visit").toString());
         averageTime = Double.parseDouble(swInfo.get("average_time").toString());
         bounceRate = Double.parseDouble(swInfo.get("bounce_rate").toString());
-        rank = Integer.parseInt(swInfo.get("rank").toString());
+        rank = swInfo.get("rank")!=null? Integer.parseInt(swInfo.get("rank").toString()):0;
         this.entityId = entityId;
         this.domain = domain;
 
