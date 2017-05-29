@@ -80,6 +80,20 @@
             <artifactId>spring-aspects</artifactId>
         </dependency>
 
+
+        <!-- Apache license https://github.com/dropwizard/metrics -->
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
+        <!-- Apache license https://github.com/dropwizard/metrics -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
+        </dependency>
+
+
+
     </dependencies>
     <build>
         <plugins>

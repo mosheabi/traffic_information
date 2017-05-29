@@ -15,7 +15,7 @@ public class TrafficInfoProperties implements PropertyDefinitions {
 
     public static final Property SOCKET_TIMEOUT = new Property("socket.timeout","30","socket timeout for http connection.Prevent freeze of site");
     public static final Property CSV_SEPARATOR = new Property("csv.separator","\t","csv separator");
-    public static final Property NUM_PROCESSES = new Property("num.publishers","4","number of publishers run  ");
+    public static final Property NUM_PROCESSES = new Property("publishers.threads.num","4","number of publishers run  ");
 
 
 

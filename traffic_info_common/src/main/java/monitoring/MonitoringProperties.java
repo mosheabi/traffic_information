@@ -13,7 +13,7 @@ public class MonitoringProperties implements PropertyDefinitions {
 	public static final Property STATD_IS_ACTIVE = new Property("monitoring.is.active","true","Is the mechanism to publish monitoring counters active");
 	public static final Property STATD_HOST_PROPERTY_KEY_NAME = new Property("bis.monitor.host.ip","${bis_monitor_ip}:173.45.126.74","Ip of the statd server");//In dev - 173.45.126.74 In prod -10.132.130.235
 	public static final Property STATD_PORT_PROPERTY_KEY_NAME = new Property("bis.monitor.port.number","${bis_monitor_port}:2003","port of the statd server");//2003
-	public static final Property STATD_PUBLISH_TIME_PROPERTY_KEY_NAME = new Property("monitoring.publish.delay.in.mili","60000","interval of publishing counters to mnitor (in miliseconds)");
+	public static final Property STATD_PUBLISH_TIME_PROPERTY_KEY_NAME = new Property("monitoring.publish.delay.in.mili","5000","interval of publishing counters to mnitor (in miliseconds)");
 	public static final Property STATD_IS_DEBUG_PUBLISHER = new Property("monitoring.use.debug.implementation.instead.of.publisher","false","Should DEBUG mode be used - publishing to log4j instead of monitor server.");
 	
 	public static final Property JMXTRANS_QUERYINTERVALINSECONDS = new Property("jmxtrans.queryIntervalInSeconds","30","jmxtrans (mechanism to publish jvm JMX to monitor) queryIntervalInSeconds");
