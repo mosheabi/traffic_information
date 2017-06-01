@@ -163,6 +163,7 @@ public class PublisherTrafficInformationSW implements Callable {
             logger.debug("Send request to "+trafficUrlTemplate);
             Pair<Integer, String> swResponse = httpUtil.getHttp(trafficUrlTemplate,TrafficInfoProperties.SOCKET_TIMEOUT.getIntValue());
             SwCalls swCalls = new SwCalls(trafficUrlTemplate,swResponse.getRight(),publisherTraffic.getDomain(),SwCalls.TRAFFIC_CALL );
+            logger.debug("Insert into api log data : ");
             swCallsLogger.info(swCalls.toCsv());
             if(swResponse.getLeft()!= HttpStatus.SC_OK || StringUtils.isEmpty(swResponse.getRight())){
                 logger.error("Failed get response " + trafficUrlTemplate);

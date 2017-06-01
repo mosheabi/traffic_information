@@ -27,10 +27,10 @@ public class HttpUtil {
 
 
     public Pair<Integer,String> getHttp(String url, int socketTimeOut){
-        logger.debug("Got request for http "+url);
+        logger.debug("In HTTP util : Got request for http "+url);
         HttpResponse response = null;
         String result = null;
-       MutablePair<Integer,String> httpResult = new MutablePair<Integer,String>();
+        MutablePair<Integer,String> httpResult = new MutablePair<Integer,String>();
         try {
 
 
@@ -49,7 +49,7 @@ public class HttpUtil {
                 public void run() {
                     if (httpGet != null) {
                         httpGet.abort();
-                        logger.debug("Reach timeout in sec " + socketTimeOut + "   " +url);
+                        logger.debug("In HTTP util :Reach timeout in sec " + socketTimeOut + "   " +url);
                     }
                 }
             };
@@ -68,10 +68,10 @@ public class HttpUtil {
                     // now you have the string representation of the HTML request
 
                     instream.close();
+                    logger.debug("In HTTP util : response code " + response.getStatusLine().getStatusCode() + " url " + url);
+                    logger.debug("In HTTP util : response data " + result + " url " + url);
                     httpResult.setLeft(response.getStatusLine().getStatusCode());
                     httpResult.setRight(result);
-
-
                 }
                 else{
                     logger.error("No content from "+url);
