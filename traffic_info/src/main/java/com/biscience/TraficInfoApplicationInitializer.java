@@ -67,7 +67,7 @@ public class TraficInfoApplicationInitializer implements CommandLineRunner,Runna
         trafficInfoService.execute();
         System.out.println("Send counters to Graffy...");
         try {
-            Thread.sleep(10000);
+            Thread.sleep(40000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

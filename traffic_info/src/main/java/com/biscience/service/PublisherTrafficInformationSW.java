@@ -4,6 +4,7 @@ import com.biscience.SwApiParser;
 import com.biscience.TrafficInfoProperties;
 import com.biscience.model.*;
 import com.google.common.collect.Maps;
+import monitoring.counters.dynamic.CounterManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
@@ -157,6 +158,7 @@ public class PublisherTrafficInformationSW implements Callable {
             Pair<Integer, String> swResponse = httpUtil.getHttp(sourceDataUrlTemplate,TrafficInfoProperties.SOCKET_TIMEOUT.getIntValue());
             SwCalls swCalls = new SwCalls(sourceDataUrlTemplate,swResponse.getRight(),publisherTraffic.getDomain(),SwCalls.SOURCE_DATA_CALL );
             swCallsLogger.info(swCalls.toCsv());
+            updateSwCounters(swResponse);
             if(swResponse.getLeft()!= HttpStatus.SC_OK || StringUtils.isEmpty(swResponse.getRight())){
                 logger.error("Failed get response " + sourceDataUrlTemplate);
                 logger.debug("Publisher should be not updated with SW source info "+ publisherTraffic.getDomain());
@@ -182,6 +184,7 @@ public class PublisherTrafficInformationSW implements Callable {
             SwCalls swCalls = new SwCalls(trafficUrlTemplate,swResponse.getRight(),publisherTraffic.getDomain(),SwCalls.TRAFFIC_CALL );
             logger.debug("Insert into api log data : ");
             swCallsLogger.info(swCalls.toCsv());
+            updateSwCounters(swResponse);
             if(swResponse.getLeft()!= HttpStatus.SC_OK || StringUtils.isEmpty(swResponse.getRight())){
                 logger.error("Failed get response " + trafficUrlTemplate);
                 logger.debug("Publisher should be not updated with SW info "+ publisherTraffic.getDomain());
@@ -195,6 +198,12 @@ public class PublisherTrafficInformationSW implements Callable {
         return swData;
     }
 
+    private void updateSwCounters(Pair<Integer, String> swResponse) {
+       if(swResponse.getLeft()!= HttpStatus.SC_OK)
+           TrafficInfoService.counterManager.inc(CounterManager.Types.SW_FAILED);
+        TrafficInfoService.counterManager.inc(CounterManager.Types.SW_COMPLETED);
+
+    }
 
 
     public PublisherTraffic getPublisherTraffic() {

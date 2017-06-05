@@ -24,7 +24,7 @@ public class TrafficInfoService {
 
 	private static Logger logger = Logger.getLogger(TrafficInfoService.class);
 	// counters
-	private CounterManager counterManager;
+	public static CounterManager counterManager;
 
 
 
@@ -112,16 +112,16 @@ public class TrafficInfoService {
 				Map<Integer,Boolean> countriesChannel = countryIdChanelStatusMap.get(countryIdChanelStatus);
 				countriesChannel.keySet().forEach(chanelStatus->{
 					doneCounts[0]++;
-					counterManager.inc(CounterManager.Types.RECEIVED);
+					counterManager.inc(CounterManager.Types.PUBL_RECEIVED);
 					if(countriesChannel.get(chanelStatus)) {
 						doneCounts[1]++;
-						counterManager.inc(CounterManager.Types.COMPLETED);
+						counterManager.inc(CounterManager.Types.PUBL_COMPLETED);
 
 					}
 
 					else{
 						doneCounts[2]++;
-						counterManager.inc(CounterManager.Types.FAILED);
+						counterManager.inc(CounterManager.Types.PUBL_FAILED);
 					}
 
 				});
@@ -131,6 +131,10 @@ public class TrafficInfoService {
 		logger.info("Found for updates "+ doneCounts[0]);
 		logger.info("Succeded updates "+ doneCounts[1]);
 		logger.info("Failed updates "+ doneCounts[2]);
+
+
+
+
 
 
 	}

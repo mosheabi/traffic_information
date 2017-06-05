@@ -2,8 +2,6 @@ package monitoring.counters.dynamic;
 
 import monitoring.counters.SimpleIntegerCounter;
 import monitoring.counters.Timer;
-import monitoring.counters.dynamic.CompoundMonitorable;
-import monitoring.counters.dynamic.TemplatedMonitorable;
 import monitoring.counters.dynamic.creator.CounterCreator;
 import monitoring.counters.dynamic.creator.TimerCreator;
 
@@ -133,9 +131,12 @@ public class CounterManager {
     }
 
     public enum Types {
-        RECEIVED("ticketsReceived"),
-        COMPLETED("ticketsCompleted"),
-        FAILED("ticketsFailed");
+        PUBL_RECEIVED("publisherUpdatesSend"),
+        PUBL_COMPLETED("publisherUpdatesCompleted"),
+        PUBL_FAILED("publisherUpdatesFailed"),
+        SW_COMPLETED("SwRequestSucceded"),
+        SW_FAILED("SwRequestFailed");
+
 
         private String value;
 
