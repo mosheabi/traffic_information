@@ -199,6 +199,7 @@ public class PublisherTrafficInformationSW implements Callable {
     }
 
     private void updateSwCounters(Pair<Integer, String> swResponse) {
+       TrafficInfoService.counterManager.inc(CounterManager.Types.SW_SEND);
        if(swResponse.getLeft()!= HttpStatus.SC_OK)
            TrafficInfoService.counterManager.inc(CounterManager.Types.SW_FAILED);
         TrafficInfoService.counterManager.inc(CounterManager.Types.SW_COMPLETED);

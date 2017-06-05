@@ -135,9 +135,8 @@ public class CounterManager {
         PUBL_COMPLETED("publisherUpdatesCompleted"),
         PUBL_FAILED("publisherUpdatesFailed"),
         SW_COMPLETED("SwRequestSucceded"),
-        SW_FAILED("SwRequestFailed");
-
-
+        SW_FAILED("SwRequestFailed"),
+        SW_SEND("SwRequestSend");
         private String value;
 
         Types(String value) {
