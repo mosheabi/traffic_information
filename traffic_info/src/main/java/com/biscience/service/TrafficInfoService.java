@@ -32,6 +32,8 @@ public class TrafficInfoService {
 	public static Map<Integer,Integer> domainCountriesMap;
 	public static Map<Integer,Integer> domainParentMap;
 	public static Map<String,PublisherTraffic>  domainTrafficMap;
+	//public static StringBuffer msgText;
+	public static Boolean upgradeSwAccount ;
 
 
 
@@ -45,6 +47,8 @@ public class TrafficInfoService {
 		EntitiesDao.getRelevantPublishersForSW();
 		EntitiesDao.getCountries();
 		counterManager = new CounterManager();
+		//msgText = new StringBuffer();
+		upgradeSwAccount = new Boolean(false);
 
 
 	}
@@ -128,6 +132,13 @@ public class TrafficInfoService {
 			});
 
 		});
+		//for test msgText
+
+		if(upgradeSwAccount.booleanValue())
+		{
+			sendMail();
+
+		}
 		logger.info("Found for updates "+ doneCounts[0]);
 		logger.info("Succeded updates "+ doneCounts[1]);
 		logger.info("Failed updates "+ doneCounts[2]);
@@ -137,8 +148,14 @@ public class TrafficInfoService {
 
 
 
+
 	}
 
+	private void sendMail() {
+		SendMail sendMail = new SendMail();
+		String subject = TrafficInfoProperties.MAIL_SUBJECT.getValue();
+		sendMail.send(subject,TrafficInfoProperties.MAIL_MSG.getValue());
+	}
 
 
 	private String getInfoDate() {

@@ -185,9 +185,11 @@ public class PublisherTrafficInformationSW implements Callable {
             logger.debug("Insert into api log data : ");
             swCallsLogger.info(swCalls.toCsv());
             updateSwCounters(swResponse);
+            updateSwFailedOnCredit(swResponse,publisherTraffic.getDomain(),publisherTraffic.getEntityId());
             if(swResponse.getLeft()!= HttpStatus.SC_OK || StringUtils.isEmpty(swResponse.getRight())){
                 logger.error("Failed get response " + trafficUrlTemplate);
                 logger.debug("Publisher should be not updated with SW info "+ publisherTraffic.getDomain());
+
             }
             else{
                 swData = swApiParser.parseSwData(swResponse.getRight(),publisherTraffic.getEntityId(),httpUtil.getUrlWithProtocol(publisherTraffic.getDomain()),infoDate);
@@ -196,6 +198,19 @@ public class PublisherTrafficInformationSW implements Callable {
             logger.error("Failed get SW data " +e);
         }
         return swData;
+    }
+
+    private void updateSwFailedOnCredit(Pair<Integer, String> swResponse, String domain, int entityId) {
+
+
+        if(swResponse.getLeft() == HttpStatus.SC_FORBIDDEN)
+        {
+           // StringBuilder sb = new StringBuilder();
+           // sb.append("Entity id: " ).append(entityId).append(" , ").append("Domain : ").append(domain).append(" , ").append(swResponse.getRight()).append(" \n");
+           // TrafficInfoService.msgText.append(sb.toString());
+            TrafficInfoService.upgradeSwAccount = true;
+        }
+
     }
 
     private void updateSwCounters(Pair<Integer, String> swResponse) {
